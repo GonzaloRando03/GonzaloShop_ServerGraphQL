@@ -196,7 +196,7 @@ const getProducts = async (root, args) => {
 
     } catch (error) {
         return [{
-            error: "Usuario no encontrado o sin permisos"
+            error: "Productos no encontrados"
         }]
     }
 
