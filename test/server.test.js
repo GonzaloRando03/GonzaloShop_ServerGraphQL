@@ -67,18 +67,17 @@ describe('Server test',  () => {
       }
 
       const response = await makeQuery(query)
-      expect(response.data.getBuy.id).toBeDefined()
+      expect(response.data.getBuy[0].id).toBeDefined()
   })
 
 
   test('Microservicio de PHP devuelve errores correctamente', async () => {
     const query = {
-      "query":"mutation { getBuy(idUsuario: 1234, token: \"tokentotalmentevalido\"){ __typename ... on Compra {precioTotal}... on Error {error} } }"
+      "query":"mutation{getBuy(idUsuario: 1234, token: \"aldskffdgjoiejlka\"){ __typename ... on Compra { id } ... on Error { error } } }"
     }
-
     const response = await makeQuery(query)
     console.log(response)
-    expect(response.data.getBuy.error).toBeDefined()
+    expect(response.errors).toBeDefined()
   })
 })
   
