@@ -1,8 +1,11 @@
 const axios = require("axios")
 
+const USER_MICROSERVICE_ADDR = process.env.USER_MICROSERVICE_ADDR || 'http://127.0.0.1:8000' 
+const BUY_MICROSERVICE_ADDR = process.env.BUY_MICROSERVICE_ADDR || 'http://127.0.0.1:8001'
+const PRODUCT_MICROSERVICE_ADDR = process.env.PRODUCT_MICROSERVICE_ADDR || 'http://127.0.0.1:7000'
 
 const createUser = async (root, args) => {
-    const URL = 'http://127.0.0.1:8000/api/users/'
+    const URL = USER_MICROSERVICE_ADDR + '/api/users/'
     try {
         const user = {
             name: args.name,
@@ -25,7 +28,7 @@ const createUser = async (root, args) => {
 
 
 const addMoney = async (root, args) => {
-    const URL = 'http://127.0.0.1:8000/api/users/'
+    const URL = USER_MICROSERVICE_ADDR + '/api/users/'
     try {
         const user = {
             money: args.money, 
@@ -44,7 +47,7 @@ const addMoney = async (root, args) => {
 
 
 const delUser = async (root, args) => {
-    const URL = 'http://127.0.0.1:8000/api/users/'
+    const URL = USER_MICROSERVICE_ADDR + '/api/users/'
     try {
         const config = {
             headers: { Authorization: args.token }
@@ -61,7 +64,7 @@ const delUser = async (root, args) => {
 
 
 const loginUser = async (root, args) => {
-    const URL = 'http://127.0.0.1:8000/api/login/'
+    const URL = USER_MICROSERVICE_ADDR + '/api/login/'
     try {
         const login = {
             username: args.username,
@@ -79,7 +82,7 @@ const loginUser = async (root, args) => {
 
 
 const sendBuy = async (root, args) => {
-    const URL = 'http://127.0.0.1:8001/api/compras/'
+    const URL = BUY_MICROSERVICE_ADDR + '/api/compras/'
     try {
         const buy = {
             idUsuario: args.idUsuario,
@@ -103,7 +106,7 @@ const sendBuy = async (root, args) => {
 
 
 const getBuy = async (root, args) => {
-    const URL = 'http://127.0.0.1:8001/api/compras/'
+    const URL = BUY_MICROSERVICE_ADDR + '/api/compras/'
     try {
         const config = {
             headers: { Authorization: args.token }
@@ -120,7 +123,7 @@ const getBuy = async (root, args) => {
 
 //función para conseguir un único producto
 const getProductOne = async (root, args) => {
-    const URL = 'http://127.0.0.1:7000/api/product/'
+    const URL = PRODUCT_MICROSERVICE_ADDR + '/api/product/'
 
     try {
         const response = await axios.get(URL+String(args.ident))
@@ -136,7 +139,7 @@ const getProductOne = async (root, args) => {
 
 //función para añadir una valoración
 const addValoration = async (root, args, context) => {
-    const URL = 'http://127.0.0.1:7000/api/product/'
+    const URL = PRODUCT_MICROSERVICE_ADDR + '/api/product/'
 
     if (!args.ident | !args.username | !args.stars){
         return {
@@ -170,7 +173,7 @@ const getProducts = async (root, args) => {
     const searchParam = args.search? args.search: 'no-search'
     const order = args.order? args.order: "Destacados"
 
-    const URL = `http://127.0.0.1:7000/api/products/${amount}/${order}/${maxPrice}/${minPrice}/${searchParam}/${args.sale}`
+    const URL = PRODUCT_MICROSERVICE_ADDR + `/api/products/${amount}/${order}/${maxPrice}/${minPrice}/${searchParam}/${args.sale}`
 
     if(minPrice > maxPrice){
         return [{error: "Precios incorrectos"}]
