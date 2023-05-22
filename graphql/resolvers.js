@@ -3,7 +3,6 @@ const queries = require("./queries")
 const pubsub = new PubSub()
 
 const resolvers = {
-    //para devolver el tipo Result
     ProductRes: {
       __resolveType: (object) => {
         if (object.name) {

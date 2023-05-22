@@ -4,6 +4,7 @@ const USER_MICROSERVICE_ADDR = process.env.USER_MICROSERVICE_ADDR || 'http://127
 const BUY_MICROSERVICE_ADDR = process.env.BUY_MICROSERVICE_ADDR || 'http://127.0.0.1:8001'
 const PRODUCT_MICROSERVICE_ADDR = process.env.PRODUCT_MICROSERVICE_ADDR || 'http://127.0.0.1:7000'
 
+//función para crear usuario
 const createUser = async (root, args) => {
     const URL = USER_MICROSERVICE_ADDR + '/api/users/'
     try {
@@ -26,7 +27,7 @@ const createUser = async (root, args) => {
     }
 }
 
-
+//función para añadir  dinero a la cartera
 const addMoney = async (root, args) => {
     const URL = USER_MICROSERVICE_ADDR + '/api/users/'
     try {
@@ -45,7 +46,7 @@ const addMoney = async (root, args) => {
     }
 }
 
-
+//función para eliminar usuario
 const delUser = async (root, args) => {
     const URL = USER_MICROSERVICE_ADDR + '/api/users/'
     try {
@@ -62,7 +63,7 @@ const delUser = async (root, args) => {
     }
 }
 
-
+//función para login
 const loginUser = async (root, args) => {
     const URL = USER_MICROSERVICE_ADDR + '/api/login/'
     try {
@@ -80,7 +81,7 @@ const loginUser = async (root, args) => {
     }
 }
 
-
+//función para compra
 const sendBuy = async (root, args) => {
     const URL = BUY_MICROSERVICE_ADDR + '/api/compras/'
     try {
@@ -104,7 +105,7 @@ const sendBuy = async (root, args) => {
     }
 }
 
-
+//función para conseguir las compras de un usuario
 const getBuy = async (root, args) => {
     const URL = BUY_MICROSERVICE_ADDR + '/api/compras/'
     try {
@@ -166,14 +167,16 @@ const addValoration = async (root, args, context) => {
 
 //función para conseguir los productos
 const getProducts = async (root, args) => {
-    //cantidad es igual a la pasada por argumento o en su defecto a todos los documentos.
+    //formateamos los argumentos de la petición
     const amount = args.amount? args.amount: 50
     const maxPrice = args.price? args.price[0]: 1000000
     const minPrice = args.price? args.price[1]: 0
     const searchParam = args.search? args.search: 'no-search'
     const order = args.order? args.order: "Destacados"
+    const category = args.category? args.category: "Todas las categorías"
+    const sale = args.sale? args.sale: false
 
-    const URL = PRODUCT_MICROSERVICE_ADDR + `/api/products/${amount}/${order}/${maxPrice}/${minPrice}/${searchParam}/${args.sale}`
+    const URL = PRODUCT_MICROSERVICE_ADDR + `/api/products/${amount}/${order}/${maxPrice}/${minPrice}/${searchParam}/${sale}/${category}/`
 
     if(minPrice > maxPrice){
         return [{error: "Precios incorrectos"}]
@@ -182,18 +185,6 @@ const getProducts = async (root, args) => {
     try {
         const response = await axios.get(URL)
         let products = [...response.data]
-
-        if (args.category === "Tecnología" ||
-            args.category === "Hogar" ||
-            args.category === "Ropa" ||
-            args.category === "Complementos" ||
-            args.category === "Juguetes" ||
-            args.category === "Cocina"){
-            
-            products = products.filter(p => p.category === args.category)
-        }
-
-        console.log(products)
 
         return products
 
