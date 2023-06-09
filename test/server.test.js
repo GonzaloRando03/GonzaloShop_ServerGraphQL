@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../index')
 const axios = require('axios')
@@ -44,7 +43,7 @@ describe('Server test',  () => {
 
     test('Microservicio JavaScript funciona correctamente', async () => {
         const query = {
-            "query":"mutation { addValoration(ident: \"63c722826668daae40c4fd3d\", username: \"manoloLama\", text: \"Valoración de prueba\", stars: 5){ __typename ... on Product {name}... on Error {error} } }"
+            "query":"mutation { addValoration(ident: \"6447b73c262de0cf3a66167c \", username: \"manoloLama\", text: \"Valoración de prueba\", stars: 5){ __typename ... on Product {name}... on Error {error} } }"
         }
   
         const response = await makeQuery(query)
@@ -81,7 +80,3 @@ describe('Server test',  () => {
   })
 })
   
-//cuando acabamos cerramos la conexión con la base de datos.
-afterAll(async () => {
-await mongoose.connection.close()
-})
